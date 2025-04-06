@@ -1,8 +1,6 @@
-<img width="1440" alt="image" src="https://github.com/user-attachments/assets/6d892881-ba8e-441d-84db-46e1207b81c7" />**ECS 162 CA 3 Final MicroBlog Documentation**
+>**ECS 162 CA 3 Final MicroBlog Documentation**
 
 **Home (not logged in)**  
-![][image1]
-<img width="1440" alt="image" src="https://github.com/user-attachments/assets/8687ab31-90b6-4713-8feb-c52886a72315" />
 ![alt text](image.png)
 
 - There is a drop-down option for the user to choose to sort by ‘most recent’ or ‘most liked’  
