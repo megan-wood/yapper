@@ -1,0 +1,138 @@
+{{! Use the main layout }}
+{{!< main }}
+
+{{! New Post Submission Form }}
+<section class="content-container">
+    {{#if loggedIn}}
+        <!-- show the create post form when logged in -->
+        <section class="post-form">
+            <!-- make a header here -->
+            <h1>Create a new {{postNeoType}}</h1>
+            <form action="/posts" method="POST">
+                <!-- title input field name = "title" -->
+                <label for="postTitle"></label>
+                <input type="text" name="postTitle" id="postTitle" placeholder="Title"><br>
+                <!-- text area input field name = "content" -->
+                <textarea id="usersPostContent" name="usersPostContent" placeholder="What's on your mind {{user.username}}?" class="preserve-newlines"></textarea><br>
+                <div class="form-actions">
+                    <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button>
+                    <button type="submit" class="post-button">Post</button>
+                </div>
+            </form>
+
+            <div id="emoji-container" class="emoji-panel" style="display: none;">
+                <!-- input field for the emoji search, use oninput="searchEmojis() -->
+                <label for="emoji-search"></label>
+                <input type="text" name="emoji-search" id="emoji-search" placeholder="what emoji are you looking for?" oninput="searchEmojis()"><br>
+                <!-- a div, id = "emoji-grid" -->
+                <div id="emoji-grid"></div>
+            </div>
+        </section>
+    {{/if}}
+    <section class="posts-list">
+        <h1>Recent Posts</h1>
+        <div class="sort-dropdown">
+            <label for="sortOption">Sort by: </label>
+            <select name="sortOption" id="sortOption" onchange="handleSortOption()">
+                <option value="" selected disabled>Choose an option</option>
+                <option value="date">Most recent</option>
+                <option value="likes">Most liked</option>
+            </select>
+        </div>
+        <!-- recent posts -->
+        {{#if posts.length}}
+        <ul>
+            {{#each posts}}
+                <!-- you have to pass the user in to posts and this is the syntax -->
+                {{> post this user=../user replies=../replies}}
+            {{/each}}
+        </ul>
+        {{else}}
+            <!-- no posts, oh no, what now? -->
+            <p>There are not posts to show.</p>
+        {{/if}}
+    </section>
+</section>
+
+
+{{! JavaScript for Emoji Integration }}
+<script>
+
+/*
+ You want to show a subset of the emojis. About 200. However,
+ you also want the user to be able to search all emojis,
+ so, put them in this array when the array is empty so 
+ that you have them.
+*/
+
+let allEmojis = [];  // Global list to hold all emojis
+
+function toggleEmojiPanel() {
+    const container = document.getElementById('emoji-container');
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+
+
+    if(container.style.display === 'block' && allEmojis.length == 0){
+        // go "Fetch" you some emojis and show them off with displayEmojies
+        fetch(`https://emoji-api.com/emojis?access_key=b9e5bef9bfc7c947c1a2bb75f8049d713022839c`)
+            .then(res => res.json()) 
+            .then(data => {
+                allEmojis = data
+                displayEmojis(data)
+            })
+    }
+}
+
+function displayEmojis(emojis,limit=200) {
+    const container = document.getElementById('emoji-grid');
+    container.innerHTML = '';  // Clear previous results
+    if (Array.isArray(emojis) && emojis.length > 0) {
+        emojis.slice(0, limit).forEach(emoji => {
+            const emojiElement = document.createElement('span');
+            emojiElement.textContent = emoji.character;
+            emojiElement.title = emoji.slug;  // Showing the emoji name on hover
+            emojiElement.style.cursor = 'pointer';
+            emojiElement.onclick = () => insertEmoji(emoji.character);
+            container.appendChild(emojiElement);
+        });
+    } else {
+        container.textContent = 'No emojis found. Try a different search!';
+    }
+}
+
+function searchEmojis() {
+    const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
+    let filteredEmojis = [];
+    allEmojis.forEach (emoji => {
+        if (emoji.slug.includes(searchTerm)) {
+            filteredEmojis.push(emoji);
+        }
+    })
+    
+    displayEmojis(filteredEmojis);
+}
+
+function insertEmoji(emoji) {
+    // put an emoji on a form somehow. 
+    let textarea = document.getElementById("usersPostContent")
+    textarea.value += emoji;
+
+    // do this when you're doing getting the emoji on the form
+    //
+    textarea.focus();  // Keep focus on the textarea
+}
+
+function handleSortOption() {
+    const sortOption = document.getElementById("sortOption");
+    const selectedIndex = sortOption.selectedIndex;
+    const selectedOption = sortOption.options[selectedIndex];
+
+    const option = selectedOption.value;
+    console.log('Selected value:', option);
+
+    // Route back to the home with the query for the option
+    window.location.replace(`/?option=${option}`);
+}
+
+</script>
+

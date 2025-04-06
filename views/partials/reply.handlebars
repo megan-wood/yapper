@@ -1,0 +1,51 @@
+<div class="post">
+    <div class="post-avatar">
+        <!-- the user's avatar -->
+        <img src={{getUserAvatar username}} alt="User Avatar">
+    </div>
+    <div class="post-content preserve-newlines">
+        <!-- the post -->
+        <h2>{{title}}</h2>
+        <p id="post-body-content-{{id}}">{{content}}</p>
+        <hr>
+        <div class="post-status-bar">
+            <!-- everything that is shown in the status bar -->
+            <!-- Heart = ♥ -->
+            {{#ifCond username user.username}}
+            <button class="trash" data-id={{replyId}} onclick=handleReplyDeleteClick(event)><i class="fas fa-trash-alt"> </i></button>
+            {{else}}
+            <button class="heart" data-id={{replyId}} onclick=handleReplyLikeClick(event)>♥</button>
+            {{/ifCond}}
+            <!-- font awesome  trashcan = <i class="fas fa-trash-alt"> </i>-->
+            <p>{{likes}} Likes</p>
+            <p id="post-status-info">Posted by {{username}} on {{timestamp}}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleReplyDeleteClick(event) {
+        console.log('trying to delete reply');
+        const replyId = event.currentTarget.getAttribute('data-id');   
+        console.log("replyid to delete: ", replyId);  
+
+        // you might want to "fetch" something...       
+        fetch(`/deleteReply/${replyId}`, {
+            method: 'POST'
+        })
+        .then(location.reload());
+    }
+
+    function handleReplyLikeClick(event) {
+        console.log('trying to like reply');
+        const replyId = event.currentTarget.getAttribute('data-id');   
+        console.log("replyid to delete: ", replyId);  
+
+        // you might want to "fetch" something...       
+        fetch(`/likeReply/${replyId}`, {
+            method: 'POST'
+        })
+        .then(location.reload());
+    }
+
+</script>

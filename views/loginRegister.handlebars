@@ -1,0 +1,15 @@
+{{! Use the main layout }}
+{{!< main }}
+
+<section class="login-register">
+    <section class = "sign-in-area">
+        <h2>Sign in with Google</h2>
+        <!-- errors will appear here -->
+        {{#if regError}}
+            <p style="color: red;">{{regError}}</p>
+        {{/if}}
+        <div class="container">
+            <button id="glogin-button" onclick="location.href= '/auth/google'">Sign in with Google</button>
+        </div>
+    </section>
+</section>

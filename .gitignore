@@ -1,0 +1,7 @@
+/node_modules
+/public/.DS_Store
+/views/.DS_Store
+.env
+/public/images/.DS_Store
+/.DS_Store
+/createAvatar.js

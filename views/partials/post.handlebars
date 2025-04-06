@@ -1,0 +1,129 @@
+{{! Partial for a single post and potential replies }}
+<section class="post-and-replies">
+    <div class="post">
+        <div class="post-avatar">
+            <!-- the user's avatar -->
+            <img src={{getUserAvatar username}} alt="User Avatar">
+        </div>
+        <div class="post-content preserve-newlines">
+            <!-- the post -->
+            <h2>{{title}}</h2>
+            <p class="post-text" id="post-body-content-{{id}}">{{content}}</p> 
+            <div class="edit-post-area">
+                    <form action="/edit/{{id}}" method="POST">
+                        <textarea class="edit-box" id="edit-box-{{id}}" name="editContent"></textarea>
+                        <button type="submit" class="save-edit-button" id='save-edit-button-{{id}}' data-id={{id}}>Save Edit</button>
+                    </form> 
+            </div>
+            <hr>
+            <div class="post-status-bar">
+                <!-- everything that is shown in the status bar -->
+                <!-- Heart = ♥ -->
+                {{#ifCond username user.username}}
+                    <button class="trash" data-id={{id}} onclick=handleDeleteClick(event)><i class="fas fa-trash-alt"> </i></button>
+                {{else}}
+                    <button class="heart" data-id={{id}} onclick=handleLikeClick(event)>♥</button>
+                {{/ifCond}}
+                <!-- font awesome  trashcan = <i class="fas fa-trash-alt"> </i>-->
+                <p>{{likes}} Likes</p>
+                {{#ifCond edited 1}}
+                    <p id="post-status-info">Edited by {{username}} on {{timestamp}}</p>
+                {{else}}
+                    <p id="post-status-info">Posted by {{username}} on {{timestamp}}</p>
+                {{/ifCond}}
+            </div>
+            <div class="edit-reply-options">
+                {{#ifCond username user.username}}
+                <button class="edit-button" data-id={{id}} onclick=handleEditClick(event)>Edit</button>
+                {{/ifCond}}
+                <button class="reply-button" data-id={{id}} onclick=handleReplyClick(event)>Reply</button>
+            </div>
+        </div>
+    </div>
+    <div class="replies-area">
+        <div class="reply-post-area">
+            <div id="reply-form-{{id}}" class="reply-form">
+                <form action="/replyPost/{{id}}" method="POST">
+                    <!-- text area input field name = "reply" -->
+                    <textarea id="replyContent-{{id}}" class="reply-box" name="replyContent" placeholder="What would you like to reply {{user.username}}?" class="preserve-newlines"></textarea><br>
+                    {{!-- <div class="form-actions"> --}}
+                        {{!-- <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button> --}}
+                    <button type="submit" class="post-reply-button">Post Reply</button>
+                    {{!-- </div> --}}
+                </form>
+            </div>
+            <section class="replies-list">
+                {{#if replies.length}} 
+                <ul>
+                    {{#each replies}}
+                        {{!-- Only print out reply post when the original postId matches so you know those are replies for that post --}}
+                        {{#ifCond ../this.id this.originalPostId}} 
+                            {{> reply this user=../user}}
+                        {{else}}
+                        {{/ifCond}}
+                    {{/each}}
+                </ul>
+                {{else}}
+                {{/if}}
+            </section>
+            </div>
+    </div> 
+</section>
+<script>
+    function handleDeleteClick(event) {
+        console.log('trying to delete');
+        const postId = event.currentTarget.getAttribute('data-id');   
+        console.log("postid to delete: ", postId);  
+
+        // you might want to "fetch" something...       
+        fetch(`/delete/${postId}`, {
+            method: 'POST'
+        })
+        .then(location.reload());
+    }
+
+    function handleLikeClick(event) {
+        console.log("trying to like");
+        const postId = event.target.getAttribute('data-id');
+
+        // you might want to "fetch" something...    
+        fetch(`/like/${postId}`, {
+            method: 'POST'
+        })
+        .then(location.reload());
+    }
+
+    function handleEditClick(event) {
+
+        const postId = event.target.getAttribute('data-id');
+        const postBody = document.getElementById(`post-body-content-${postId}`);
+        const postBodyContent = postBody.innerHTML;
+        console.log(postBody.innerHTML);
+        
+        const editArea = document.getElementById(`edit-box-${postId}`);
+        editArea.style.display = "block";  // makes the edit text area show up when "edit" button is clicked
+        editArea.value += postBodyContent;
+        postBody.style.display = "none";
+        event.target.style.display = "none";  // hide the edit button
+
+        const saveEditButton = document.getElementById(`save-edit-button-${postId}`);
+        saveEditButton.style.display = "block";  // make the "save edit" button appear when text is being edited
+
+    }
+
+    function handleReplyClick(event) {
+        const postId = event.target.getAttribute('data-id');
+        const postBody = document.getElementById(`post-body-content-${postId}`);
+        const replyArea = document.getElementById(`reply-form-${postId}`);
+        replyArea.style.display = "block";  // makes the reply text area show up when "reply" button is clicked'
+        event.target.style.display = "none";
+        
+        
+    }
+    
+    
+
+
+
+
+</script>
