@@ -1,7 +1,7 @@
 >**ECS 162 CA 3 Final MicroBlog Documentation**
 
 **Home (not logged in)**  
-![alt text](image.png)
+![alt text](images/image.png)
 
 - There is a drop-down option for the user to choose to sort by ‘most recent’ or ‘most liked’  
   - Based on which option is selected, the posts will sort themselves based on the selection  
@@ -10,27 +10,27 @@
 - If the user attempts to ‘reply’ and ‘post reply’ they will be redirected to the LOGIN/REGISTER page
 
 **Login/Register**  
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 *Login with Google OAuth*
 
 - The website will first prompt the user to sign in with Google
 
 ![][image3]  
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 ![][image4]
 
 - If the user has not signed in with that google account before, they will be prompted to register and create a new username  
   - If the username has already been taken, the user will be prompted to create a new one
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 - After doing so, page will be redirected to the home page  
 - If the user has already registered an account with the blog, then they will be redirected to the home page
 
 **Home (logged in)**  
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 ***Left Side**:* place where user can submit a post  
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
 - Allows input for Title and Content  
 - **Emoji button:** shows the first 200 emojis of a list  
@@ -43,15 +43,15 @@
   - The post will now show up as the first post on the Right Side if ordered by ‘most recent’
 
 ***Right Side*****:** place where user can see all posts by other users  
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 
 - Allows user to **sort** by ‘most recent’ or ‘most liked’ posts  
 - Most recent will be based on the timestamp  
 - Most liked will be based on the number of likes
 
-Sorted by most recent post:  	![alt text](image-7.png) 
+Sorted by most recent post:  	![alt text](images/image-7.png) 
 Sort by most liked:  
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
 - **Like button:** user can interact with other posts from other users by clicking on the heart (which will turn red upon hovering); they cannot like their own post  
   - By liking the post, the number of likes will increment  
@@ -59,13 +59,13 @@ Sort by most liked:
   - Delete the post by clicking on the trashcan icon (will turn read upon hovering)  
 - **Edit button:** a user can only edit their own posts and no one else’s
 
-![alt text](image-10.png)
+![alt text](images/image-10.png)
 - By clicking on the post to edit, a textbox will appear with the original post content allowing the user to append or edit any changes  
   - The ‘save edit’ button will appear instead of the ‘edit’ button  
     - By clicking, this will submit the changes to the database, change timestamp to when the edits were made, and change the words to “Edited by \<User\> at \<Timestamp”  
   - **Reply button**: a user can reply to their own post or any other user’s posts
 
-![alt text](image-9.png)
+![alt text](images/image-9.png)
 
 - By clicking on the post to reply, a new textbox will appear for the user to enter their reply  
   - A ‘post reply’ button will replace the ‘reply button’  
@@ -74,7 +74,7 @@ Sort by most liked:
       - The user cannot edit a reply post
 
 **Profile**  
-![alt text](image-11.png)
+![alt text](images/image-11.png)
 
 - Has the avatar nice and large along with user data (username and when they became a user)  
 - Lists the users posts below  
